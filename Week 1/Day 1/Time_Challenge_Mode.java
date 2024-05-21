@@ -4,23 +4,28 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 public class Time_Challenge_Mode {
 
     static boolean timerfail;
+    static boolean scannerfail;
     static Scanner scanner;
     static AtomicInteger number;
-    
+
     public static void main(String[] args) {
         System.out.println("Advanced Number Guessing Game");
-        System.out.println("------------------------");
+        System.out.println("---------------------------------");
+        System.out.println("Directions:");
+        System.err.println(
+                """
+                        The program generates a random number between 1 and 100.
+                        The user has to guess the number, and the program provides hints (higher or lower) until the user guesses correctly.
+                        The number of attempts will be displayed at the end.""");
+        System.out.println("---------------------------------");
         System.out.println("Choose Your Difficulty Level");
         System.out.println("1.) Easy : Number between 1 and 50. 30 Attempts.");
         System.out.println("2.) Medium : Number between 1 and 100. 25 Attempts.");
         System.out.println("3.) Hard : Number between 1 and 500. 20 Attempts.");
-        
-        
-        
+
         scanner = new Scanner(System.in);
         Random rand = new Random();
         int difficulty = scanner.nextInt();
@@ -39,53 +44,45 @@ public class Time_Challenge_Mode {
                 bound = 500;
                 attemptlimit = 20;
             }
-            default -> {
-            }
+            default -> throw new IllegalArgumentException("No valid input detected");
         }
-        int current = 1+rand.nextInt(bound);
+        int target = 1 + rand.nextInt(bound);
         int attempts = 0;
-        
+
         long second = 1000;
         int duration = 10;
-        // long currentTime;
+
         long delay = 0;
 
         while (true) {
-            System.out.println("Guess The number(you have ten seconds): ");
+            System.out.println("Guess the number(you have ten seconds): ");
             Timer timer = new Timer();
             scanner = new Scanner(System.in);
-            // currentTime = duration;
             AtomicInteger currentTime = new AtomicInteger(duration);
 
             timerfail = false;
+            scannerfail = false;
 
             number = new AtomicInteger(-1);
 
-            System.out.println("before");
             Thread scanthread = new Thread() {
 
                 public void run() {
-                try {
-                    number.set(scanner.nextInt());
-                    timer.cancel();
-                    // scanner.close();
-                    System.out.println("scanned "+number);
+                    try {
+                        number.set(scanner.nextInt());
+                        timer.cancel();
+                        System.out.println("scanned " + number);
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("There is an exception");
-                }
+                    } catch (Exception e) {
+                        System.out.println("Exception caught: " + e.getMessage());
+                        scannerfail = true;
+                    }
 
-                return;
-                
-
-                
                 }
             };
 
             scanthread.start();
-            System.out.println("waiter");
-
+            // System.out.println("waiter");
 
             timer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
@@ -93,20 +90,13 @@ public class Time_Challenge_Mode {
                     if (currentTime.intValue() <= 0) {
                         timerfail = true;
                         timer.cancel();
-                        // scanner.close();
+                        scanner.close();
                         // System.out.print("breach");
                         return;
-                    } 
+                    }
                     currentTime.decrementAndGet();
-                    return;
                 }
             }, delay, second);
-
-            
-           
-
-
-            
 
             while (true) {
                 if (number.intValue() != -1) {
@@ -117,32 +107,37 @@ public class Time_Challenge_Mode {
                     System.out.println("Ran out of time");
                     break;
                 }
+                if (scannerfail == true) {
+                    System.out.println("Scanner failed");
+                    break;
+                }
 
             }
-            System.out.println("pasted");
+            // System.out.println("pasted");
 
             // scanthread.suspend();
-            if (timerfail) {
+            if (timerfail || scannerfail) {
                 break;
             }
-            attempts+=1;
+            attempts += 1;
 
-            if (number.intValue() < current) {
-                System.out.println("Higher");
-            } else if (number.intValue() > current) {
-                System.out.println("Lower");
+            if (number.intValue() < target) {
+                System.out.println("The answer is higher");
+
+            } else if (number.intValue() > target) {
+                System.out.println("The answer is lower");
             } else {
-                System.out.println("Correct!!");
+                System.out.println("Correct!");
                 break;
             }
-            attempts+=1;
+
             if (attempts >= attemptlimit) {
-                System.out.println("Above the number of Attempts limit");
+                System.out.println("Ran out of attempts!");
                 break;
             }
         }
-        System.out.println("The number of Attempts is "+ attempts);
-        return;
+        System.out.println("The number of attempts is " + attempts);
+        System.exit(0);
 
     }
 
