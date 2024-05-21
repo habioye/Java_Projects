@@ -74,6 +74,7 @@ public class Time_Challenge_Mode {
 
             number = new AtomicInteger(-1);
 
+            // Create a separate thread to scan for user input.
             Thread scanthread = new Thread() {
 
                 public void run() {
@@ -91,6 +92,7 @@ public class Time_Challenge_Mode {
 
             scanthread.start();
 
+            // Create a separate timer thread to update the time left every second.
             timer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
                     System.out.println(currentTime);
