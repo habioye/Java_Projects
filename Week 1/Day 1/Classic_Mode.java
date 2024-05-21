@@ -14,8 +14,7 @@ public class Classic_Mode {
             """
                 The program generates a random number between 1 and 100.
                 The user has to guess the number, and the program provides hints (higher or lower) until the user guesses correctly.
-                The number of attempts will be displayed at the end.
-            """ 
+                The number of attempts will be displayed at the end.""" 
         );
         System.out.println("---------------------------------");
         try (Scanner scanner = new Scanner(System.in)) {
@@ -35,13 +34,13 @@ public class Classic_Mode {
                     System.out.println("The answer is lower");
                 } else {
                     System.out.println("Correct!!");
-                    System.out.println("The number of Attempts is " + attempts);
+                    System.out.println("The number of attempts is " + attempts);
                     break;
                 }
                 
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Exception caught: "+e.getMessage());
         }
 
     }
