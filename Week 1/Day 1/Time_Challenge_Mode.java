@@ -11,6 +11,13 @@ public class Time_Challenge_Mode {
     static Scanner scanner;
     static AtomicInteger number;
 
+    // The program will generate a random number and the user has to guess the
+    // answer(with hints).
+    // When the correct answer is given the number of attempts is displayed.
+    // The number of allowed attempts and the random number range changes with
+    // difficulty
+    // When guessing there will be a ten second timer and the game fails if the ten
+    // seconds are up.
     public static void main(String[] args) {
         System.out.println("Advanced Number Guessing Game");
         System.out.println("---------------------------------");
@@ -54,6 +61,8 @@ public class Time_Challenge_Mode {
 
         long delay = 0;
 
+        // Loop to keep checking if the given number matches the target.
+        // Exit loop if correct answer found or reached attempt limit.
         while (true) {
             System.out.println("Guess the number(you have ten seconds): ");
             Timer timer = new Timer();
@@ -71,7 +80,6 @@ public class Time_Challenge_Mode {
                     try {
                         number.set(scanner.nextInt());
                         timer.cancel();
-                        System.out.println("scanned " + number);
 
                     } catch (Exception e) {
                         System.out.println("Exception caught: " + e.getMessage());
@@ -82,7 +90,6 @@ public class Time_Challenge_Mode {
             };
 
             scanthread.start();
-            // System.out.println("waiter");
 
             timer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
@@ -91,7 +98,6 @@ public class Time_Challenge_Mode {
                         timerfail = true;
                         timer.cancel();
                         scanner.close();
-                        // System.out.print("breach");
                         return;
                     }
                     currentTime.decrementAndGet();
@@ -100,22 +106,19 @@ public class Time_Challenge_Mode {
 
             while (true) {
                 if (number.intValue() != -1) {
-                    System.out.println("output");
                     break;
                 }
                 if (timerfail == true) {
-                    System.out.println("Ran out of time");
+                    System.out.println("Ran out of time!");
                     break;
                 }
                 if (scannerfail == true) {
-                    System.out.println("Scanner failed");
+                    System.out.println("Scanner failed!");
                     break;
                 }
 
             }
-            // System.out.println("pasted");
 
-            // scanthread.suspend();
             if (timerfail || scannerfail) {
                 break;
             }
@@ -135,6 +138,9 @@ public class Time_Challenge_Mode {
                 System.out.println("Ran out of attempts!");
                 break;
             }
+        }
+        if (timerfail || scannerfail) {
+            System.out.println("The correct answer is " + target);
         }
         System.out.println("The number of attempts is " + attempts);
         System.exit(0);
