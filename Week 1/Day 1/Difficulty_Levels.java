@@ -3,6 +3,11 @@ import java.util.Scanner;
 
 public class Difficulty_Levels {
 
+    // The program will generate a random number and the user has to guess the
+    // answer(with hints).
+    // When the correct answer is given the number of attempts is displayed.
+    // The number of allowed attempts and the random number range changes with
+    // difficulty
     public static void main(String[] args) {
         System.out.println("Advanced Number Guessing Game");
         System.out.println("---------------------------------");
@@ -18,50 +23,55 @@ public class Difficulty_Levels {
         System.out.println("2.) Medium : Number between 1 and 100. 25 Attempts.");
         System.out.println("3.) Hard : Number between 1 and 500. 20 Attempts.");
 
-        Scanner scanner = new Scanner(System.in);
-        Random rand = new Random();
-        int difficulty = scanner.nextInt();
-        int bound = 0;
-        int attemptlimit = 0;
-        switch (difficulty) {
-            case 1 -> {
-                bound = 50;
-                attemptlimit = 30;
+        try (Scanner scanner = new Scanner(System.in)) {
+            Random rand = new Random();
+            int difficulty = scanner.nextInt();
+            int bound = 0;
+            int attemptlimit = 0;
+            switch (difficulty) {
+                case 1 -> {
+                    bound = 50;
+                    attemptlimit = 30;
+                }
+                case 2 -> {
+                    bound = 100;
+                    attemptlimit = 25;
+                }
+                case 3 -> {
+                    bound = 500;
+                    attemptlimit = 20;
+                }
+                default -> throw new IllegalArgumentException("No valid input detected");
             }
-            case 2 -> {
-                bound = 100;
-                attemptlimit = 25;
+            int target = 1 + rand.nextInt(bound);
+            int attempts = 0;
+
+            // Loop to keep checking if the given number matches the target.
+            // Exit loop if correct answer found or reached attempt limit.
+            while (true) {
+                System.out.println("Guess The number: ");
+                int number = scanner.nextInt();
+                attempts += 1;
+
+                if (number < target) {
+                    System.out.println("The answer is higher");
+
+                } else if (number > target) {
+                    System.out.println("The answer is lower");
+                } else {
+                    System.out.println("Correct!");
+                    break;
+                }
+
+                if (attempts >= attemptlimit) {
+                    System.out.println("Ran out of attempts!");
+                    break;
+                }
             }
-            case 3 -> {
-                bound = 500;
-                attemptlimit = 20;
-            }
-            default -> throw new IllegalArgumentException("No valid input detected");
+            System.out.println("The number of attempts is " + attempts);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        int target = 1 + rand.nextInt(bound);
-        int attempts = 0;
-
-        while (true) {
-            System.out.println("Guess The number: ");
-            int number = scanner.nextInt();
-            attempts += 1;
-
-            if (number < target) {
-                System.out.println("The answer is higher");
-
-            } else if (number > target) {
-                System.out.println("The answer is lower");
-            } else {
-                System.out.println("Correct!");
-                break;
-            }
-
-            if (attempts >= attemptlimit) {
-                System.out.println("Ran out of attempts!");
-                break;
-            }
-        }
-        System.out.println("The number of attempts is " + attempts);
 
     }
 
