@@ -41,7 +41,7 @@ public class Basic_Implementation {
         }
 
         // Vertical Win
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < board.length; j++) {
             start = board[0][j];
             if (start == empty)
                 continue;
@@ -124,6 +124,11 @@ public class Basic_Implementation {
                 System.out.println("You selected the a filled space!");
                 continue;
             }
+            if (first) {
+                board[x][y] = "X";
+            } else {
+                board[x][y] = "O";
+            }
             System.out.println("Current Board");
             DisplayBoard(board);
             if (DetectWin(board)) {
@@ -139,6 +144,7 @@ public class Basic_Implementation {
                 System.out.println("The game is a Draw!");
                 return;
             }
+            first = !first;
 
         }
 
