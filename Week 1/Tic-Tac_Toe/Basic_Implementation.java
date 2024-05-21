@@ -1,5 +1,6 @@
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Basic_Implementation {
     private static void DisplayBoard(String[][] board) {
@@ -102,17 +103,44 @@ public class Basic_Implementation {
         DisplayBoard(board);
 
         int positions = length * length;
+        Scanner scanner = new Scanner(System.in);
+        int x, y;
 
-        // while (true) {
-        // System.out.println("Select a position");
-        // if (first) {
-        // System.out.println("It is currently player1's turn");
-        // } else {
+        while (true) {
+            System.out.println("Select a position (x, y)");
+            if (first) {
+                System.out.println("It is currently player1's turn");
+            } else {
 
-        // System.out.println("It is currently player2's turn");
-        // }
+                System.out.println("It is currently player2's turn");
+            }
 
-        // }
+            x = scanner.nextInt();
+            y = scanner.nextInt();
+            if (x < 0 || x >= board.length || y < 0 || y >= board.length) {
+                throw new IllegalArgumentException("Invalid position");
+            }
+            if (board[x][y] != " ") {
+                System.out.println("You selected the a filled space!");
+                continue;
+            }
+            System.out.println("Current Board");
+            DisplayBoard(board);
+            if (DetectWin(board)) {
+                if (first) {
+                    System.out.println("Player 1 Won!");
+                } else {
+                    System.out.println("Player 2 Won!");
+                }
+                return;
+            }
+            positions = -1;
+            if (positions == 0) {
+                System.out.println("The game is a Draw!");
+                return;
+            }
+
+        }
 
     }
 }
