@@ -1,6 +1,4 @@
-package Week
-
-1. TicTacToe;
+package TicTacToe;
 
 class Detect_Win {
     // private String empty = " ";
