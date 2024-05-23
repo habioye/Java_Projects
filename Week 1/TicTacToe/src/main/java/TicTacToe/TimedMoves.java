@@ -136,8 +136,11 @@ public class TimedMoves {
     // }
 
     // Implements a Tic-Tac-Toe Game based on the current state
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
+        InputTimer inputtimer;
+
+        int timerduration = 10000;
         System.out.println("Tic-Tac-Toe");
         System.out.println("------------------------------");
         System.out.println("Please Enter the Grid Size");
@@ -154,18 +157,63 @@ public class TimedMoves {
 
         int positions = length * length;
         int x, y;
+        String input = "invalid";
         // Main game loop switches between the players and updates and displays
         // the board with correct positions.
         while (true) {
+            inputtimer = new InputTimer();
+
             System.out.println("Select a position (x, y)");
             if (first) {
                 System.out.println("It is currently player1's turn");
             } else {
                 System.out.println("It is currently player2's turn");
             }
+            try {
+                System.out.println("before input");
+                try {
+                    input = inputtimer.getInput(timerduration);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                System.out.println("After input");
+                // ran out of time
+                if (input.equals("invalid")) {
+                    System.out.println("You ran out of time");
 
-            x = scanner.nextInt();
-            y = scanner.nextInt();
+                    if (first) {
+                        System.out.println("Player 2 Wins!");
+                    } else {
+                        System.out.println("Player 1 Wins!");
+                    }
+                    return;
+                }
+            } catch (Exception e) {
+
+                if (first) {
+                    System.out.println("Player 2 Wins!!!!!!!");
+                } else {
+                    System.out.println("Player 1 Wins!!!!!!!");
+                }
+                return;
+            }
+//            input.strip();
+            String[] values = input.split(" ");
+            if (values.length != 2) {
+                System.out.println(values.toString());
+                System.out.println("Wrong amount of inputs");
+                continue;
+            }
+            try {
+                x = Integer.parseInt(values[0]);
+                y = Integer.parseInt(values[1]);
+
+            } catch (Exception e) {
+                System.out.println("Invalid position given");
+                continue;
+            }
+
+
             if (x < 0 || x >= board.length || y < 0 || y >= board.length) {
                 throw new IllegalArgumentException("Invalid position");
             }
