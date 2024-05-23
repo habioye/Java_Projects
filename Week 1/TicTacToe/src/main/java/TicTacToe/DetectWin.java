@@ -1,12 +1,17 @@
 package TicTacToe;
 
-class Detect_Win {
+class DetectWin {
+    class WinData {
+        public boolean detect;
+        public boolean first;
+    }
     // private String empty = " ";
     // Horizontal Win
-    private static boolean horizontalWin(String[][] board) {
+    private WinData horizontalWin(String[][] board) {
         String empty = " ";
         String start;
         int same;
+        WinData winData = new WinData();
         for (String[] board1 : board) {
             start = board1[0];
             if (start.equals(empty))
@@ -19,16 +24,25 @@ class Detect_Win {
                 same += 1;
             }
             if (same == board.length) {
-                return true;
+                if (start == "X") {
+                    winData.first = true;
+
+                } else {
+                    winData.first = false;
+                }
+                winData.detect = true;
+                return winData;
             }
         }
-        return false;
+        winData.detect = false;
+        return winData;
     }
 
     // Vertical Win
-    private static boolean verticalWin(String[][] board) {
+    private WinData verticalWin(String[][] board) {
         String empty = " ";
         String start;
+        WinData winData = new WinData();
         int same;
         for (int j = 0; j < board.length; j++) {
             start = board[0][j];
@@ -42,19 +56,29 @@ class Detect_Win {
                 }
                 same += 1;
             }
-            if (same == board.length)
-                return true;
+            if (same == board.length){
+                if (start == "X") {
+                    winData.first = true;
+                } else {
+                    winData.first = false;
+                }
+                winData.detect = true;
+                return winData;
+            }
 
         }
-        return false;
+        winData.detect = false;
+        return winData;
+
     }
 
     // Diagonal Win
-    private static boolean diagonalWin(String[][] board) {
+    private WinData diagonalWin(String[][] board) {
         String empty = " ";
         String start;
         int same;
         start = board[0][0];
+        WinData winData = new WinData();
         if (!start.equals(empty)) {
             same = 0;
             for (int i = 0; i < board.length; i++) {
@@ -64,9 +88,16 @@ class Detect_Win {
                 same += 1;
             }
             if (same == board.length) {
-                return true;
+                if (start.equals("X")) {
+                    winData.first = true;
+                } else {
+                    winData.first = false;
+                }
+                winData.detect = true;
+                return winData;
             }
         }
+
 
         start = board[board.length - 1][0];
         if (!start.equals(empty)) {
@@ -79,31 +110,44 @@ class Detect_Win {
             }
 
             if (same == board.length) {
-                return true;
+                if (start.equals("X")) {
+                    winData.first = true;
+                } else {
+                    winData.first = false;
+                }
+                winData.detect = true;
+                return winData;
             }
         }
-        return false;
+        winData.detect = false;
+        return winData;
     }
 
     // Detects if the board contains a win based on
     // horizontal/vertical/diagonal tic-tac-toe win condiditions
-    public static boolean winDetected(String[][] board) {
+    public WinData winDetected(String[][] board) {
+        WinData winData = new WinData();
+        winData = horizontalWin(board);
         // Horizontal Win
-        if (horizontalWin(board)) {
-            return true;
+        if (winData.detect) {
+            return winData;
         }
 
+        winData = verticalWin(board);
         // Vertical Win
-        if (verticalWin(board)) {
-            return true;
+        if (winData.detect) {
+            return winData;
         }
+
+        winData = diagonalWin(board);
+
 
         // Diagonal Win
-        if (diagonalWin(board)) {
-            return true;
+        if (winData.detect) {
+            return winData;
         }
-
-        return false;
+        winData.detect = false;
+        return winData;
 
     }
 

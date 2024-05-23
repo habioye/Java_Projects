@@ -32,53 +32,35 @@ public class InputTimer {
     }
 
     void timerCountdown() {
-        List<Integer> arr = IntStream.range(1, 10)
+        IntStream.range(1, 10)
                 .mapToObj(i -> i)
-                .toList();
-
-        Collections.reverse(arr);
-        arr.forEach(i -> {
-            try {
-                Thread.sleep(1000);
-                System.out.printf("Time Left: %d", i);
-                if (i == 1) {
+                .toList()
+                .reversed()
+                .forEach(i -> {
+                try {
                     Thread.sleep(1000);
-                    System.out.println("Ran out of time");
+                    System.out.printf("Time Left: %d\n", i);
+//                    System.out.println("checkiing if reached");
+//                    if (i == 1) {
+//                        Thread.sleep(1000);
+//                        System.out.println("Ran out of time");
+//                        executors.shutdownNow();
+//                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
         });
     }
 
     private void InputTimer(int timeoutDuration) throws InterruptedException {
-        // Thread scanthread = new Thread() {
 
-        // @Override
-        // public void run() {
-        // waitForInput();
-
-        // }
-        // };
-
-        // scanthread.start();
-
-        // Thread timerthread = new Thread() {
-        // @Override
-        // public void run() {
-        // timerCountdown();
-        // }
-        // };
-
-        // timerthread.start();
-
-        this.timeoutDuration = timeoutDuration;
+//        this.timeoutDuration = timeoutDuration;
 
         input = "invalid";
         executors.submit(this::waitForInput);
-        executors.submit(this::waitForInput);
+        executors.submit(this::timerCountdown);
 
-        executors.awaitTermination(this.timeoutDuration, TimeUnit.MILLISECONDS);
+        executors.awaitTermination(timeoutDuration, TimeUnit.MILLISECONDS);
 
         if (input.equals("invalid")) {
             System.out.println("Took too long");

@@ -30,6 +30,13 @@ public class AIOpponent {
         System.out.println("3.) Hard: The AI uses advanced algorithms like the minimax algorithm to make optimal moves.");
 //        https://www.neverstopbuilding.com/blog/minimax
         int difficulty = scanner.nextInt();
+        AI ai;
+        switch (difficulty) {
+            case 1 -> ai = new AIEasy();
+            case 2 -> ai = new AIMedium();
+            case 3 -> ai = new AIHard();
+            default -> throw new IllegalArgumentException("You must input a number between 1 and 3 inclusive");
+        }
 
 
 
@@ -54,7 +61,12 @@ public class AIOpponent {
             if (first) {
                 System.out.println("It is currently player1's turn");
             } else {
-                System.out.println("It is currently player2's turn");
+                System.out.println("It is currently AI's turn");
+                AI.Data data = ai.nextMove(board,first);
+                System.out.println("searched through");
+                board[data.arr[0]][data.arr[1]] = "O";
+                first = !first;
+                continue;
             }
             try {
 //                System.out.println("before input");
@@ -108,7 +120,8 @@ public class AIOpponent {
             }
             System.out.println("Current Board");
             DisplayBoard.DisplayBoard(board);
-            if (Detect_Win.winDetected(board)) {
+            DetectWin detectWin = new DetectWin();
+            if (detectWin.winDetected(board).detect) {
                 technicalwin(!first);
                 return;
             }

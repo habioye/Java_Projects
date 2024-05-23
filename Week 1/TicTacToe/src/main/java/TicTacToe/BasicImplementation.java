@@ -47,7 +47,8 @@ public class BasicImplementation {
             }
             System.out.println("Current Board");
             DisplayBoard.DisplayBoard(board);
-            if (Detect_Win.winDetected(board)) {
+            DetectWin detectWin = new DetectWin();
+            if (detectWin.winDetected(board).detect) {
                 if (first) {
                     System.out.println("Player 1 Won!");
                 } else {
