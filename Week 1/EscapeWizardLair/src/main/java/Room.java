@@ -12,14 +12,14 @@ public class Room {
 
         String room1, room2, room3, room4;
         room1 = extractName(connections[0]);
-        if (room1.length() > 10) {
-
-        }
+//        if (room1.length() > 10) {
+//
+//        }
         room2 = extractName(connections[1]);
         room3 = extractName(connections[2]);
         room4 = extractName(connections[3]);
 
-
+        System.out.println("Room Name: "+this.roomName);
 //        if (connections[0] == None)
         // Top, Left, Right, Down
         System.out.printf(String.format("""
@@ -28,7 +28,7 @@ public class Room {
                  %s    |        %s       |         %s
                _________________|________________________________|_____________
                                 | %s |
-                """,extractName(connections[0]),extractName(connections[1]),extractName(connections[2])),extractName(connections[3]));
+                """,extractName(connections[0]),extractName(connections[1]),this.roomName,extractName(connections[2])),extractName(connections[3]));
 
 
         for (Item item : objects) {
