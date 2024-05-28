@@ -3,6 +3,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class EscapeWizardLair {
+    // generates assets used for game into the collection
     private static ArrayList<Room> generateAssets() {
 //        ArrayList<Room> asset_collection = new ArrayList<>();
 //        String see, String smell, String taste, String listen, String touch, String challenge, String answer
@@ -11,7 +12,7 @@ public class EscapeWizardLair {
         Item bed = new Item();
         Item mirror = new Item();
         Item cabinet = new Item();
-        Room bedroom = new Room();
+        Room bedroom = new Room("bedroom");
         bedroom.objects.add(bed);
         bedroom.objects.add(mirror);
         bedroom.objects.add(cabinet);
@@ -19,7 +20,7 @@ public class EscapeWizardLair {
         Item table = new Item();
         Item chair = new Item();
         Item carpet = new Item();
-        Room livingroom = new Room();
+        Room livingroom = new Room("livingroom");
         livingroom.objects.add(table);
         livingroom.objects.add(chair);
         livingroom.objects.add(carpet);
@@ -27,18 +28,16 @@ public class EscapeWizardLair {
         Item boxes = new Item();
         Item Lamp = new Item();
         Item Chest = new Item();
-        Room basement = new Room();
+        Room basement = new Room("basement");
         basement.objects.add(boxes);
         basement.objects.add(Lamp);
         basement.objects.add(Chest);
 
-        Room outside = new Room();
-//        Room lavoratory = new Room();
-//        Room Subbasement = new Room();
+        Room outside = new Room("outside");
         Item scroll = new Item();
         Item hat = new Item();
         Item Bolder = new Item();
-        Room cave = new Room();
+        Room cave = new Room("cave");
         cave.objects.add(scroll);
         cave.objects.add(hat);
         cave.objects.add(Bolder);
@@ -64,6 +63,8 @@ public class EscapeWizardLair {
         return rooms;
 
     }
+
+    // Game logic
     public static void main(String[] args) {
         System.out.println("""
                 You are stuck in a mad wizard's lair. 
@@ -84,7 +85,7 @@ public class EscapeWizardLair {
                 Press 8 to exit interaction/Challenge
                 """);
         ArrayList<Room> assets = generateAssets();
-        Room current = assets.getLast();
+        Room current = assets.getFirst();
         Item curr = new Item();
         Scanner scanner = new Scanner(System.in);
         int decision;
