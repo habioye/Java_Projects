@@ -77,21 +77,94 @@ public class EscapeWizardLair {
                 to interact with items and interact with 
                 challenges.
                 Press (1-3) to Interact with objects
-                Press 4 to start a challenge for a room
-                Press 5 to move up.
-                Press 6 to move left.
-                Press 7 to move right;
-                Press 8 to move down;
+                Press 4 to move up.
+                Press 5 to move left.
+                Press 6 to move right
+                Press 7 to move down
+                Press 8 to exit interaction/Challenge
                 """);
         ArrayList<Room> assets = generateAssets();
         Room current = assets.getLast();
+        Item curr = new Item();
         Scanner scanner = new Scanner(System.in);
         int decision;
+        boolean exit;
 
         while (true) {
+            if (Objects.equals(current.roomName, "outside")) {
+                System.out.println("You have escaped the Wizard Lair!!!");
+                break;
+
+            }
             current.display();
             scanner.nextInt();
             decision = scanner.nextInt();
+            switch (decision) {
+                case 1:
+                case 2:
+                case 3:
+
+                    curr = current.objects.get(decision-1);
+
+                    while (true) {
+                        System.out.println("""
+                                1. touch
+                                2. smell
+                                3. taste
+                                4. listen
+                                5. see
+                                6. challenge
+                                7. exit
+                                """);
+                        decision = scanner.nextInt();
+                        exit = false;
+                        switch (decision) {
+                            case 1 -> {
+                                curr.touch();
+                            }
+                            case 2 -> {
+                                curr.smell();
+                            }
+                            case 3 -> {
+                                curr.taste();
+                            }
+                            case 4 -> {
+                                curr.listen();
+                            }
+                            case 5 -> {
+                                curr.see();
+                            }
+                            case 6 -> {
+                                curr.challenge();
+                            }
+                            case 7 -> {
+                                exit = true;
+                            }
+                            default -> {
+                                continue;
+                            }
+                        }
+                        if (exit) {
+                            break;
+                        }
+
+
+
+                    }
+                    break;
+
+
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                    if (!current.connections[decision].equals(null)) {
+                        current = current.connections[decision-4];
+                    }
+
+                default:
+                    throw new IllegalStateException("Unexpected value: " + decision);
+            }
 
 
         }
